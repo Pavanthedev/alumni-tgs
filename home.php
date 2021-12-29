@@ -33,6 +33,10 @@ border: unset;
 flex-direction: inherit;
 }
 
+#banner{
+    
+}
+
 .event-list .banner {
     width: calc(40%)
 }
@@ -52,8 +56,8 @@ span.hightlight{
 }
 </style>
         <header class="masthead">
-            <div class="container-fluid h-100">
-                <div class="row h-100 align-items-center justify-content-center text-center">
+            <div class="container-fluid h-100" style="background-img: url('./assets/banner.png');">
+                <div class="row h-100 align-items-center justify-content-center text-center" >
                     <div class="col-lg-8 align-self-end mb-4 page-title">
                     	<h3 class="text-white">Welcome to Tatva Global School Alumni</h3>
                         <hr class="divider my-4" />
