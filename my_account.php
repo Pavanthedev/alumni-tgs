@@ -40,28 +40,28 @@ include 'admin/db_connect.php';
                                         <div class="row form-group">
                                             <div class="col-md-4">
                                                 <label for="" class="control-label">Last Name</label>
-                                                <input type="text" class="form-control" name="lastname" value="<?php echo $_SESSION['bio']['lastname'] ?>" required>
+                                                <input type="text" class="form-control" name="lastname"  required>
                                             </div>
                                             <div class="col-md-4">
                                                 <label for="" class="control-label">First Name</label>
-                                                <input type="text" class="form-control" name="firstname" value="<?php echo $_SESSION['bio']['firstname'] ?>" required>
+                                                <input type="text" class="form-control" name="firstname"  required>
                                             </div>
                                             <div class="col-md-4">
                                                 <label for="" class="control-label">Middle Name</label>
-                                                <input type="text" class="form-control" name="middlename" value="<?php echo $_SESSION['bio']['middlename'] ?>" >
+                                                <input type="text" class="form-control" name="middlename"  >
                                             </div>
                                         </div>
                                         <div class="row form-group">
                                             <div class="col-md-4">
                                                 <label for="" class="control-label">Gender</label>
                                                 <select class="custom-select" name="gender" required>
-                                                    <option <?php echo $_SESSION['bio']['gender'] =='Male' ? 'selected' : '' ?>>Male</option>
-                                                    <option <?php echo $_SESSION['bio']['gender'] =='Female' ? 'selected' : '' ?>>Female</option>
+                                                    <option>Male</option>
+                                                    <option>Female</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-4">
                                                 <label for="" class="control-label">Batch</label>
-                                                <input type="input" class="form-control datepickerY" name="batch" value="<?php echo $_SESSION['bio']['batch'] ?>" required>
+                                                <input type="input" class="form-control datepickerY" name="batch" required>
                                             </div>
                                             <div class="col-md-4">
                                                 <label for="" class="control-label">Course Graduated</label>
@@ -71,7 +71,7 @@ include 'admin/db_connect.php';
                                                     $course = $conn->query("SELECT * FROM courses order by course asc");
                                                     while($row=$course->fetch_assoc()):
                                                     ?>
-                                                        <option value="<?php echo $row['id'] ?>"  <?php echo $_SESSION['bio']['course_id'] ==$row['id'] ? 'selected' : '' ?>><?php echo $row['course'] ?></option>
+                                                        <option><?php echo $row['course'] ?></option>
                                                     <?php endwhile; ?>
                                                 </select>
                                             </div>
@@ -79,7 +79,7 @@ include 'admin/db_connect.php';
                                         <div class="row form-group">
                                             <div class="col-md-5">
                                                 <label for="" class="control-label">Currently Connected To</label>
-                                                <textarea name="connected_to" id="" cols="30" rows="3" class="form-control"><?php echo $_SESSION['bio']['connected_to'] ?></textarea>
+                                                <textarea name="connected_to" id="" cols="30" rows="3" class="form-control"></textarea>
                                             </div>
                                             <div class="col-md-5">
                                                 <label for="" class="control-label">Image</label>
@@ -91,7 +91,7 @@ include 'admin/db_connect.php';
                                         <div class="row">
                                              <div class="col-md-4">
                                                 <label for="" class="control-label">Email</label>
-                                                <input type="email" class="form-control" name="email"  value="<?php echo $_SESSION['bio']['email'] ?>" required>
+                                                <input type="email" class="form-control" name="email" required>
                                             </div>
                                             <div class="col-md-4">
                                                 <label for="" class="control-label">Password</label>

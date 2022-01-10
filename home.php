@@ -1,6 +1,7 @@
 <?php 
 include 'admin/db_connect.php'; 
 ?>
+
 <style>
 #portfolio .img-fluid{
     width: calc(100%);
@@ -55,20 +56,32 @@ span.hightlight{
    min-height: calc(100%)
 }
 </style>
-        <header class="masthead">
-            <div class="container-fluid h-100" style="background-img: url('./assets/banner.png');">
-                <div class="row h-100 align-items-center justify-content-center text-center" >
-                    <div class="col-lg-8 align-self-end mb-4 page-title">
-                    	<h3 class="text-white">Welcome to Tatva Global School Alumni</h3>
-                        <hr class="divider my-4" />
-
-                    <div class="col-md-12 mb-2 justify-content-center">
-                    </div>                        
-                    </div>
-                    
-                </div>
-            </div>
-        </header>
+        
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+		<ol class="carousel-indicators">
+		  <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+		  <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+		  <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+		</ol>
+		<div class="carousel-inner">
+		  <div class="carousel-item active">
+			<img class="d-block w-100" src="assets/img/bridge.png" alt="First slide">
+		  </div>
+		  <div class="carousel-item">
+			<img class="d-block w-100" src="assets/img/laptop.png" alt="Second slide">
+		  </div>
+		  
+		</div>
+		<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+		  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+		  <span class="sr-only">Previous</span>
+		</a>
+		<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+		  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+		  <span class="sr-only">Next</span>
+		</a>
+	  </div>
+        
             <div class="container mt-3 pt-2">
                 <h4 class="text-center text-black">Upcoming Events</h4>
                 <hr class="divider">

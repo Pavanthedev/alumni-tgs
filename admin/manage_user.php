@@ -35,7 +35,7 @@ foreach($user->fetch_array() as $k =>$v){
 		<div class="form-group">
 			<label for="type">User Type</label>
 			<select name="type" id="type" class="custom-select">
-				<option value="2" <?php echo isset($meta['type']) && $meta['type'] == 2 ? 'selected': '' ?>>Staff</option>
+				<option value="2" <?php echo isset($meta['type']) && $meta['type'] == 2 ? 'selected': '' ?>>Alumni/Aluminus</option>
 				<option value="1" <?php echo isset($meta['type']) && $meta['type'] == 1 ? 'selected': '' ?>>Admin</option>
 			</select>
 		</div>
@@ -45,6 +45,35 @@ foreach($user->fetch_array() as $k =>$v){
 
 	</form>
 </div>
+<style>
+    .masthead{
+        min-height: 23vh !important;
+        height: 23vh !important;
+    }
+     .masthead:before{
+        min-height: 23vh !important;
+        height: 23vh !important;
+    }
+    img#cimg{
+        max-height: 10vh;
+        max-width: 6vw;
+    }
+</style>
+        <header class="masthead">
+            <div class="container-fluid h-100">
+                <div class="row h-100 align-items-center justify-content-center text-center">
+                    <div class="col-lg-8 align-self-end mb-4 page-title">
+                    	<h3 class="text-white">Create Account</h3>
+                        <hr class="divider my-4" />
+
+                    <div class="col-md-12 mb-2 justify-content-center">
+                    </div>                        
+                    </div>
+                    
+                </div>
+            </div>
+        </header>
+           
 <script>
 	
 	$('#manage-user').submit(function(e){
