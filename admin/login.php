@@ -124,7 +124,7 @@ div#login-right::before {
 		if($(this).find('.alert-danger').length > 0 )
 			$(this).find('.alert-danger').remove();
 		$.ajax({
-			url:'ajax.php?action=login',
+			url:'ajax.php?action=login2',
 			method:'POST',
 			data:$(this).serialize(),
 			error:err=>{

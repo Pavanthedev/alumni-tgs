@@ -18,10 +18,10 @@ Class Action {
 	function login(){
 		
 			extract($_POST);		
-			$qry = $this->db->query("SELECT * FROM users where username = '".$username."' and password = '".md5($password)."' ");
+			$qry = $this->db->query("SELECT * FROM users where username = '".$username."' and password = '".$password."' ");
 			if($qry->num_rows > 0){
 				foreach ($qry->fetch_array() as $key => $value) {
-					if($key != 'passwors' && !is_numeric($key))
+					if($key != 'password' && !is_numeric($key))
 						$_SESSION['login_'.$key] = $value;
 				}
 				if($_SESSION['login_type'] != 1){
@@ -38,31 +38,20 @@ Class Action {
 	}
 	function login2(){
 		
-			extract($_POST);
-			if(isset($email))
-				$username = $email;
-		$qry = $this->db->query("SELECT * FROM users where username = '".$username."' and password = '".md5($password)."' ");
+		extract($_POST);		
+		$qry = $this->db->query("SELECT * FROM users where username = '".$username."' and password = '".$password."' ");
 		if($qry->num_rows > 0){
 			foreach ($qry->fetch_array() as $key => $value) {
-				if($key != 'passwors' && !is_numeric($key))
+				if($key != 'password' && !is_numeric($key))
 					$_SESSION['login_'.$key] = $value;
 			}
-			if($_SESSION['login_alumnus_id'] > 0){
-				$bio = $this->db->query("SELECT * FROM alumnus_bio where id = ".$_SESSION['login_alumnus_id']);
-				if($bio->num_rows > 0){
-					foreach ($bio->fetch_array() as $key => $value) {
-						if($key != 'passwors' && !is_numeric($key))
-							$_SESSION['bio'][$key] = $value;
-					}
+			if($_SESSION['login_type'] != 1){
+				foreach ($_SESSION as $key => $value) {
+					unset($_SESSION[$key]);
 				}
+				return 2 ;
+				exit;
 			}
-			if($_SESSION['bio']['status'] != 1){
-					foreach ($_SESSION as $key => $value) {
-						unset($_SESSION[$key]);
-					}
-					return 2 ;
-					exit;
-				}
 				return 1;
 		}else{
 			return 3;
@@ -153,10 +142,10 @@ Class Action {
 	}
 	function update_account(){
 		extract($_POST);
-		$data = " name = '".$firstname.' '.$lastname."' ";
-		$data .= ", username = '$email' ";
+		
+		
 		if(!empty($password))
-		$data .= ", password = '".md5($password)."' ";
+		$data .= ", password = '".$password."' ";
 		$chk = $this->db->query("SELECT * FROM users where username = '$email' and id != '{$_SESSION['login_id']}' ")->num_rows;
 		if($chk > 0){
 			return 2;

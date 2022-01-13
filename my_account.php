@@ -37,48 +37,35 @@ include 'admin/db_connect.php';
                             <div class="container-fluid">
                                 <div class="col-md-12">
                                     <form action="" id="update_account">
+                                        
                                         <div class="row form-group">
                                             <div class="col-md-4">
-                                                <label for="" class="control-label">Last Name</label>
-                                                <input type="text" class="form-control" name="lastname"  required>
+                                            <label for="" class="control-label">Name</label>
+                                            <input type="text" value="<?php echo $_SESSION['login_name'] ?>" class="form-control" readonly="readonly">
                                             </div>
                                             <div class="col-md-4">
-                                                <label for="" class="control-label">First Name</label>
-                                                <input type="text" class="form-control" name="firstname"  required>
+                                            <label for="" class="control-label">Username</label>
+                                            <input type="text" value="<?php echo $_SESSION['login_username'] ?>" class="form-control" readonly="readonly">
                                             </div>
-                                            <div class="col-md-4">
-                                                <label for="" class="control-label">Middle Name</label>
-                                                <input type="text" class="form-control" name="middlename"  >
-                                            </div>
-                                        </div>
-                                        <div class="row form-group">
                                             <div class="col-md-4">
                                                 <label for="" class="control-label">Gender</label>
-                                                <select class="custom-select" name="gender" required>
-                                                    <option>Male</option>
-                                                    <option>Female</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-4">
+                                                <input type="text" value="Your Gender" class="form-control" readonly="readonly">
+                                                </div>
+                                            
+                                        </div>
+                                        <div class="row form-group">
+                                        <div class="col-md-4">
                                                 <label for="" class="control-label">Batch</label>
-                                                <input type="input" class="form-control datepickerY" name="batch" required>
+                                                <input type="text" value="Your Batch" class="form-control" readonly="readonly">
                                             </div>
                                             <div class="col-md-4">
                                                 <label for="" class="control-label">Course Graduated</label>
-                                                <select class="custom-select select2" name="course_id" required>
-                                                    <option></option>
-                                                    <?php 
-                                                    $course = $conn->query("SELECT * FROM courses order by course asc");
-                                                    while($row=$course->fetch_assoc()):
-                                                    ?>
-                                                        <option><?php echo $row['course'] ?></option>
-                                                    <?php endwhile; ?>
-                                                </select>
+                                                <input type="text" class="form-control" name="course"  >
                                             </div>
                                         </div>
                                         <div class="row form-group">
                                             <div class="col-md-5">
-                                                <label for="" class="control-label">Currently Connected To</label>
+                                                <label for="" class="control-label">Status</label>
                                                 <textarea name="connected_to" id="" cols="30" rows="3" class="form-control"></textarea>
                                             </div>
                                             <div class="col-md-5">
@@ -89,10 +76,7 @@ include 'admin/db_connect.php';
                                             </div>  
                                         </div>
                                         <div class="row">
-                                             <div class="col-md-4">
-                                                <label for="" class="control-label">Email</label>
-                                                <input type="email" class="form-control" name="email" required>
-                                            </div>
+                                             
                                             <div class="col-md-4">
                                                 <label for="" class="control-label">Password</label>
                                                 <input type="password" class="form-control" name="password">

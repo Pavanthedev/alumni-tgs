@@ -123,25 +123,6 @@ if($action == "participate"){
 	if($save)
 		echo $save;
 }
-if($action == "get_venue_report"){
-	$get = $crud->get_venue_report();
-	if($get)
-		echo $get;
-}
-if($action == "save_art_fs"){
-	$save = $crud->save_art_fs();
-	if($save)
-		echo $save;
-}
-if($action == "delete_art_fs"){
-	$save = $crud->delete_art_fs();
-	if($save)
-		echo $save;
-}
-if($action == "get_pdetails"){
-	$get = $crud->get_pdetails();
-	if($get)
-		echo $get;
-}
+
 ob_end_flush();
 ?>
