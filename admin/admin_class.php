@@ -45,13 +45,7 @@ Class Action {
 				if($key != 'password' && !is_numeric($key))
 					$_SESSION['login_'.$key] = $value;
 			}
-			if($_SESSION['login_type'] != 1){
-				foreach ($_SESSION as $key => $value) {
-					unset($_SESSION[$key]);
-				}
-				return 2 ;
-				exit;
-			}
+			
 				return 1;
 		}else{
 			return 3;
@@ -146,7 +140,7 @@ Class Action {
 		
 		if(!empty($password))
 		$data .= ", password = '".$password."' ";
-		$chk = $this->db->query("SELECT * FROM users where username = '$email' and id != '{$_SESSION['login_id']}' ")->num_rows;
+		$chk = $this->db->query("SELECT * FROM users where username = '$username' and id != '{$_SESSION['login_id']}' ")->num_rows;
 		if($chk > 0){
 			return 2;
 			exit;
@@ -168,7 +162,7 @@ Class Action {
 							$data .= ", avatar = '$fname' ";
 
 			}
-			$save_alumni = $this->db->query("UPDATE alumnus_bio set $data where id = '{$_SESSION['bio']['id']}' ");
+			$save_alumni = $this->db->query("UPDATE users set $data where id = '{$_SESSION['bio']['id']}' ");
 			if($data){
 				foreach ($_SESSION as $key => $value) {
 					unset($_SESSION[$key]);

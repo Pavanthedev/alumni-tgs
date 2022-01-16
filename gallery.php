@@ -19,6 +19,7 @@ flex-direction: inherit;
 }
 .gallery-img img{
     border-radius: 5px;
+    border: solid;
     min-height: 50vh;
     max-width: calc(100%);
 }
@@ -47,6 +48,13 @@ header.masthead,header.masthead:before {
 .gallery-text{
     justify-content: center;
     align-items: center ;
+}
+
+
+#border{
+    border-radius: 5px;
+    border: solid black;
+    border-style: solid;
 }
 .masthead{
         min-height: 23vh !important;
@@ -102,23 +110,23 @@ header.masthead,header.masthead:before {
                         $ci = 0;
                     }
                 ?>
-                <div class="col-md-6">
-                <div class="card gallery-list <?php echo $rtl ?>" data-id="<?php echo $row['id'] ?>">
-                        <div class="gallery-img" card-img-top>
+                <div class="col-md-6 imgbox">
+                    <div class="card-body" id="border">
+                        <div class="card gallery-list <?php echo $rtl ?>" data-id="<?php echo $row['id'] ?>">
+                            <div class="gallery-img" card-img-top>
 
-                            <img src="<?php echo isset($img[$row['id']]) && is_file($fpath.'/'.$img[$row['id']]) ? $fpath.'/'.$img[$row['id']] :'' ?>" alt="">
-                        </div>
-                    <div class="card-body">
-                        <div class="row align-items-center justify-content-center text-center h-100">
-                            <div class="">
-                                <div>
-                                <span class="truncate" style="font-size: inherit;"><small><?php echo ucwords($row['about']) ?></small></span>
-                                    <br>
+                                <img src="<?php echo isset($img[$row['id']]) && is_file($fpath.'/'.$img[$row['id']]) ? $fpath.'/'.$img[$row['id']] :'' ?>" alt="">
+                            </div>
+                            <div class="card-body" id="border">
+                                <div class="row align-items-center justify-content-center text-center h-100" id="text">
+                                    <div class="">
+                                        <div>
+                                        <span class="truncate" style="font-size: inherit;"><small><?php echo ucwords($row['about']) ?></small></span>
+                                        <br>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        
-
                     </div>
                 </div>
                 <br>

@@ -15,7 +15,7 @@ border: unset;
 flex-direction: inherit;
 }
 .alumni-img {
-    width: calc(30%);
+    width: calc(50%);
     max-height: 30vh;
     display: flex;
     align-items: center;
@@ -25,7 +25,7 @@ flex-direction: inherit;
     width: calc(70%);
 }
 .alumni-img img {
-    border-radius: 100%;
+    border-radius: 90%;
     max-height: calc(100%);
     max-width: calc(100%);
 }
@@ -108,14 +108,14 @@ header.masthead,header.masthead:before {
                     <div class="row">
                 <?php
                 $fpath = 'admin/assets/uploads';
-                $alumni = $conn->query("SELECT a.*,c.course,Concat(a.lastname,', ',a.firstname,' ',a.middlename) as name from alumnus_bio a inner join courses c on c.id = a.course_id order by Concat(a.lastname,', ',a.firstname,' ',a.middlename) asc");
+                $alumni = $conn->query("SELECT * from users where type = '3' order by name asc");
                 while($row = $alumni->fetch_assoc()):
                 ?>
                 <div class="col-md-4 item">
                 <div class="card alumni-list" data-id="<?php echo $row['id'] ?>">
                         <div class="alumni-img" card-img-top>
 
-                            <img src="<?php echo $fpath.'/'.$row['avatar'] ?>" alt="">
+                            <img src="<?php echo $fpath.'/'.$row['avatar'] ?>" class="" alt="user profile pic">
                         </div>
                     <div class="card-body">
                         <div class="row align-items-center h-100">
@@ -123,10 +123,10 @@ header.masthead,header.masthead:before {
                                 <div>
                                 <p class="filter-txt"><b><?php echo $row['name'] ?></b></p>
                                 <hr class="divider w-100" style="max-width: calc(100%)">
-                                <p class="filter-txt">Email: <b><?php echo $row['email'] ?></b></p>
-                                <p class="filter-txt">Course: <b><?php echo $row['course'] ?></b></p>
+                                <p class="filter-txt">Email: <b><?php echo $row['username'] ?></b></p>
+                                <p class="filter-txt">Course: <b><?php echo $row['Curr_work'] ?></b></p>
                                 <p class="filter-txt">Batch: <b><?php echo $row['batch'] ?></b></p>
-                                <p class="filter-txt">Currently working in/as <b><?php echo $row['connected_to'] ?></b></p>
+                                <p class="filter-txt">Description <b><?php echo $row['status'] ?></b></p>
                                     <br>
                                 </div>
                             </div>

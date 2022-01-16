@@ -1,6 +1,45 @@
-<?php 
-include 'admin/db_connect.php'; 
+<?php
+$showAlert = false; 
+$showError = false; 
+$exists=false;
+if($_SERVER["REQUEST_METHOD"] == "POST") {
+    include 'admin/db_connect.php';
+    $name = $_POST['name'];
+    $Curr_work = $_POST['currentlywork'];
+    $status = $_POST['status'];
+    $password = $_POST['password'];
+    $filename =basename($_FILES["fileToUpload"]["name"]);
+    $target_dir = "admin/assets/uploads/";
+    $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+    $uploadOk = 1;
 
+
+
+    if(!empty($password)){
+        $change_password = "update users set password = '$password' where name = '$name'";
+        $result = mysqli_query($conn, $change_password);
+    }
+    $update_acc = "update users set status = '$status', Curr_work = '$Curr_work', avatar = '$filename' where name = '$name'";
+    $result = mysqli_query($conn, $update_acc);
+
+    if($result) {
+        $showAlert = true;
+    }
+    if ($uploadOk == 0) {
+        echo "Sorry, your file was not uploaded.";
+      // if everything is ok, try to upload file
+      } else {
+        if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+          
+        } 
+      }
+    
+
+    
+    
+    
+
+}
 ?>
 <style>
     .masthead{
@@ -20,7 +59,7 @@ include 'admin/db_connect.php';
             <div class="container-fluid h-100">
                 <div class="row h-100 align-items-center justify-content-center text-center">
                     <div class="col-lg-8 align-self-end mb-4 page-title">
-                    	<h3 class="text-white">Manage Account</h3>
+                    	<h3 class="ext-white">Manage Account</h3>
                         <hr class="divider my-4" />
 
                     <div class="col-md-12 mb-2 justify-content-center">
@@ -36,44 +75,58 @@ include 'admin/db_connect.php';
                         <div class="card-body">
                             <div class="container-fluid">
                                 <div class="col-md-12">
-                                    <form action="" id="update_account">
-                                        
+                                    <form action="" id="update_account" method="POST" enctype="multipart/form-data">
+                                        <?php 
+                                        $name = $_SESSION['login_name'];
+                                        $user_details = $conn->query("SELECT * from users where name = '$name'");
+                                        $i = 1;
+                                        while($row = $user_details->fetch_assoc()):
+                                        ?>
                                         <div class="row form-group">
+                                            
                                             <div class="col-md-4">
                                             <label for="" class="control-label">Name</label>
-                                            <input type="text" value="<?php echo $_SESSION['login_name'] ?>" class="form-control" readonly="readonly">
+                                            <input name="name" type="text" value="<?php echo $row['name'] ?>" class="form-control" readonly="readonly">
                                             </div>
                                             <div class="col-md-4">
                                             <label for="" class="control-label">Username</label>
-                                            <input type="text" value="<?php echo $_SESSION['login_username'] ?>" class="form-control" readonly="readonly">
+                                            <input name="username" type="text" value="<?php echo $row['username'] ?>" class="form-control" readonly="readonly">
                                             </div>
                                             <div class="col-md-4">
                                                 <label for="" class="control-label">Gender</label>
-                                                <input type="text" value="Your Gender" class="form-control" readonly="readonly">
+                                                <input name="gender" type="text" value="<?php echo $row['gender'] ?>" class="form-control" readonly="readonly">
                                                 </div>
                                             
                                         </div>
                                         <div class="row form-group">
                                         <div class="col-md-4">
                                                 <label for="" class="control-label">Batch</label>
-                                                <input type="text" value="Your Batch" class="form-control" readonly="readonly">
+                                                <input name="batch" type="text" value="<?php echo $row['batch'] ?>" class="form-control" readonly="readonly">
                                             </div>
                                             <div class="col-md-4">
-                                                <label for="" class="control-label">Course Graduated</label>
-                                                <input type="text" class="form-control" name="course"  >
+                                                <label for="" class="control-label">Currently Working/Studying: </label>
+                                                <input name="currentlywork" value="<?php echo $row['Curr_work'] ?>" type="text" class="form-control"  >
                                             </div>
                                         </div>
                                         <div class="row form-group">
+                                        <?php
+                                                $fpath = 'admin/assets/uploads';
+                                                $name = $_SESSION['login_name'];
+                                                $alumni = $conn->query("SELECT * from users where type = '3' && name='$name'");
+                                                while($row = $alumni->fetch_assoc()):
+                                            ?>
                                             <div class="col-md-5">
-                                                <label for="" class="control-label">Status</label>
-                                                <textarea name="connected_to" id="" cols="30" rows="3" class="form-control"></textarea>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <label for="" class="control-label">Image</label>
-                                                <input type="file" class="form-control" name="img" onchange="displayImg(this,$(this))">
-                                                <img src="admin/assets/uploads/<?php echo $_SESSION['bio']['avatar'] ?>" alt="" id="cimg">
-
+                                                
+                                                <img src="<?php echo $fpath.'/'.$row['avatar'] ?>" class="img-thumbnail" alt="user profile pic">
+                                                <br>
+                                                <input type="file" name="fileToUpload" id="fileToUpload">
                                             </div>  
+                                            
+                                            <div class="col-md-5">
+                                                <label for="" class="control-label">Description</label>
+                                                <input name="status" value ="<?php echo $row['status'] ?>" id="" cols="30" rows="3" class="form-control"></input>
+                                            </div>
+                                            
                                         </div>
                                         <div class="row">
                                              
@@ -85,13 +138,15 @@ include 'admin/db_connect.php';
                                         </div>
                                         <div id="msg">
                                             
-                                        </div>
+                                           </div>
                                         <hr class="divider">
                                         <div class="row">
                                             <div class="col-md-12 text-center">
-                                                <button class="btn btn-primary">Update Account</button>
+                                                <button class="btn btn-primary" type="submit">Update Account</button>
                                             </div>
                                         </div>
+                                        <?php endwhile; ?>  
+                                    <?php endwhile; ?>
                                     </form>
                                 </div>
                             </div>
@@ -122,28 +177,5 @@ include 'admin/db_connect.php';
         reader.readAsDataURL(input.files[0]);
     }
 }
-$('#update_account').submit(function(e){
-    e.preventDefault()
-    start_load()
-    $.ajax({
-        url:'admin/ajax.php?action=update_account',
-        data: new FormData($(this)[0]),
-        cache: false,
-        contentType: false,
-        processData: false,
-        method: 'POST',
-        type: 'POST',
-        success:function(resp){
-            if(resp == 1){
-                alert_toast("Account successfully updated.",'success');
-                setTimeout(function(){
-                 location.reload()
-                },700)
-            }else{
-                $('#msg').html('<div class="alert alert-danger">email already exist.</div>')
-                end_load()
-            }
-        }
-    })
-})
+
 </script>

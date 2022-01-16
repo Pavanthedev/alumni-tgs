@@ -11,15 +11,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST["name"]; 
     $username = $_POST["username"]; 
     $password = $_POST["password"];
-    $imgname = $_FILES['file']['name'];
-    $target_dir = "upload/";
-    $target_file = $target_dir . basename($_FILES["file"]["name"]);
-    $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-  
-    // Valid file extensions
-    $extensions_arr = array("jpg","jpeg","png","gif");
-  
-            
+    $type = $_POST["type"];
+    $gender = $_POST["gender"];
+    $batch = $_POST["batch"];
+    $description = $_POST["description"];
+    $filename = $_FILES["uploadfile"]["name"];
+    $tempname = $_FILES["uploadfile"]["tmp_name"];    
+        $folder = "image/".$filename;
+                
     
     $sql = "Select * from users where username='$username'";
     
@@ -30,20 +29,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     // This sql query is use to check if
     // the username is already present 
     // or not in our Database
-    if($num == 0 && in_array($imageFileType,$extensions_arr)) {
-        if($exists==false && move_uploaded_file($_FILES['file']['tmp_name'],$target_dir.$name)) {
-            $image_base64 = base64_encode(file_get_contents('upload/'.$name) );
-            $image = 'data:image/'.$imageFileType.';base64,'.$image_base64;
-             
+    if($num == 0 ) {
+        if($exists==false) {
+            
             $sql = "INSERT INTO `users` ( `name`, 
-                `username`, `password`) VALUES ('$name', 
-                '$username','$password')";
+                `username`, `password`, `type`, `gender`, `batch`, `status`, `avatar`) VALUES ('$name', 
+                '$username','$password', '$type', '$gender', '$batch', '$description', '$filename')";
     
             $result = mysqli_query($conn, $sql);
     
             if ($result) {
                 $showAlert = true; 
             }
+            
         } 
             
     }// end if 
@@ -183,7 +181,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="card-body">
                             <div class="container-fluid">
                                 <div class="col-md-12">
-                                    <form action="" id="create_account" method="post">
+                                    <form action="" id="create_account" method="POST" enctype="multipart/form-data">
                                         <div class="row form-group">
                                             <div class="col-md-4">
                                                 <label for="" class="control-label">Name</label>
@@ -197,44 +195,46 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                                                 <label for="" class="control-label">Password</label>
                                                 <input type="text" class="form-control" name="password" required>
                                             </div>
-                                            <div class="col-md-4">
-                                                <label for="" class="control-label">Type</label>
-                                                <div class="dropdown">
-                                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        -Please Select-
-                                                    </button>
-                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                        <a class="dropdown-item" href="#">Admin</a>
-                                                        <a class="dropdown-item" href="#">Alumni/Alumnus</a>
-                                                        
-                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="" class="control-label">Gender</label>
-                                                <div class="dropdown">
-                                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        -Please Select-
-                                                    </button>
-                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                        <a class="dropdown-item" href="#">Male</a>
-                                                        <a class="dropdown-item" href="#">Female</a>
-                                                        
-                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-5">
                                                 <label for="" class="control-label">Batch</label>
                                                 <input type="input" class="form-control datepickerY" name="batch" required>
                                             </div>
+                                            <div class="col-md-5">
+                                                    <label for="" class="control-label">Type</label>
+                                                    
+                                                    <div class="col-md-4"> 
+                                                        <select id="type" name="type" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">                      
+                                                            <option value="0" >--Select type--</option>
+                                                            <option value="1">Admin</option>
+                                                            <option value="2">Staff</option>
+                                                            <option value="3">Alumni/Alumnus</option>
+                                                        </select>
+                                                    </div>
+                                            </div>
                                             <div class="col-md-4">
-                                                <label for="" class="control-label">Avatar</label>
-                                                <input type='file' name='file' />
+                                                    <label for="" class="control-label">Gender</label>
                                                 
+                                                    <div class="col-md-4">
+                                                        
+                                                        <select id="gender" name="gender" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">                      
+                                                            <option value="0">--Select Gender--</option>
+                                                            <option value="Male">Male</option>
+                                                            <option value="Female">Female</option>   
+                                                        </select>
+                                                        
+                                                    </div>    
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="" class="control-label">Image</label>
+                                                <input type="file" class="form-control" name="img" onchange="displayImg(this,$(this))">
+                                            </div>
+                                            <div class="form-group">
+                                                <img src="<?php echo is_file('assets/uploads/gallery/img_') ?>" alt="" id="cimg">
                                             </div>
                                             <div class="col-md-4">
                                                 <label for="" class="control-label">Short Description</label>
-                                                <textarea name="description" id="" cols="30" rows="3" class="form-control"></textarea>
+                                                <textarea name="description" id="" cols="30" rows="3" class="form-control" name="description"></textarea>
                                             </div>
                                         </div>
                                         
@@ -271,4 +271,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         viewMode: "years", 
         minViewMode: "years"
    })
+   function displayImg(input,_this) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+        	$('#cimg').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
 </script>

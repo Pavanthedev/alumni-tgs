@@ -85,8 +85,7 @@ header.masthead,header.masthead:before {
         unset($trans["\""], $trans["<"], $trans[">"], $trans["<h2"]);
         $desc = strtr(html_entity_decode($row['description']),$trans);
         $desc=str_replace(array("<li>","</li>"), array("",","), $desc);
-        $count_comments=0;
-        $count_comments = $conn->query("SELECT * FROM forum_comments where topic_id = ".$row['id'])->num_rows;
+        
     ?>
     <div class="card Forum-list" data-id="<?php echo $row['id'] ?>">
         <div class="card-body">
@@ -110,9 +109,6 @@ header.masthead,header.masthead:before {
                     <hr class="divider"  style="max-width: calc(80%)">
                     <span class="badge badge-info float-left px-3 pt-1 pb-1">
                         <b><i>Topic Created by: <span class="filter-txt"><?php echo $row['name'] ?></span></i></b>
-                    </span>
-                     <span class="badge badge-secondary float-left px-3 pt-1 pb-1 ml-2">
-                        <b><i class="fa fa-comments"></i> <i><?php echo $count_comments ?> Comments</i></b>
                     </span>
                     <button class="btn btn-primary float-right view_topic" data-id="<?php echo $row['id'] ?>">View Topic</button>
                 </div>
