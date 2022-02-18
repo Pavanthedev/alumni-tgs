@@ -15,9 +15,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     $gender = $_POST["gender"];
     $batch = $_POST["batch"];
     $description = $_POST["description"];
-    $filename = $_FILES["uploadfile"]["name"];
-    $tempname = $_FILES["uploadfile"]["tmp_name"];    
-        $folder = "image/".$filename;
+    $filename =basename($_FILES["fileToUpload"]["name"]);
+    $target_dir = "assets/uploads/";
+    $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+    $uploadOk = 1;
                 
     
     $sql = "Select * from users where username='$username'";
@@ -37,6 +38,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                 '$username','$password', '$type', '$gender', '$batch', '$description', '$filename')";
     
             $result = mysqli_query($conn, $sql);
+            if ($uploadOk == 0) {
+                echo "Sorry, your file was not uploaded.";
+              // if everything is ok, try to upload file
+              } else {
+                if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+                  
+                } 
+              }
     
             if ($result) {
                 $showAlert = true; 
@@ -114,20 +123,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                      <td>
 				 		<?php echo $row['status'] ?>
 				 	</td>
-				 	<td>
-				 		<center>
-								<div class="btn-group">
-								  <button type="button" class="btn btn-primary">Action</button>
-								  <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								    <span class="sr-only">Toggle Dropdown</span>
-								  </button>
-								  <div class="dropdown-menu">
-								    
-								    <a class="dropdown-item delete_user" href="javascript:void(0)" data-id = '<?php echo $row['id'] ?>'>Delete</a>
-								  </div>
-								</div>
-								</center>
-				 	</td>
+				 	<td class="text-center">
+                        <button class="btn btn-sm btn-outline-primary edit_user" type="button" data-id="<?php echo $row['id'] ?>" >Edit</button>
+                        <button class="btn btn-sm btn-outline-danger delete_user" type="button" data-id="<?php echo $row['id'] ?>">Delete</button>
+                    </td>
 				 </tr>
 				<?php endwhile; ?>
 			</tbody>
@@ -202,8 +201,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                                             <div class="col-md-5">
                                                     <label for="" class="control-label">Type</label>
                                                     
-                                                    <div class="col-md-4"> 
-                                                        <select id="type" name="type" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">                      
+                                                    <div class="col-md-8"> 
+                                                        <select id="type" name="type" class="custom-select">                      
                                                             <option value="0" >--Select type--</option>
                                                             <option value="1">Admin</option>
                                                             <option value="2">Staff</option>
@@ -211,12 +210,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                                                         </select>
                                                     </div>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-8">
                                                     <label for="" class="control-label">Gender</label>
                                                 
                                                     <div class="col-md-4">
                                                         
-                                                        <select id="gender" name="gender" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">                      
+                                                        <select id="gender" name="gender" class="custom-select">                      
                                                             <option value="0">--Select Gender--</option>
                                                             <option value="Male">Male</option>
                                                             <option value="Female">Female</option>   
@@ -225,13 +224,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                                                     </div>    
                                             </div>
                                             
-                                            <div class="form-group">
-                                                <label for="" class="control-label">Image</label>
-                                                <input type="file" class="form-control" name="img" onchange="displayImg(this,$(this))">
-                                            </div>
-                                            <div class="form-group">
-                                                <img src="<?php echo is_file('assets/uploads/gallery/img_') ?>" alt="" id="cimg">
-                                            </div>
+                                            <div class="col-md-5">
+                                                <br>
+                                                <input class="form-control" type="file" name="fileToUpload" id="fileToUpload">
+                                            </div> 
+                                            
                                             <div class="col-md-4">
                                                 <label for="" class="control-label">Short Description</label>
                                                 <textarea name="description" id="" cols="30" rows="3" class="form-control" name="description"></textarea>
@@ -266,12 +263,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 </div>
 <script>
     
-   $('.datepickerY').datepicker({
-        format: " yyyy", 
-        viewMode: "years", 
-        minViewMode: "years"
-   })
-   function displayImg(input,_this) {
+$('.datepickerY').datepicker({
+    format: " yyyy", 
+    viewMode: "years", 
+    minViewMode: "years"
+})
+function displayImg(input,_this) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function (e) {
@@ -281,4 +278,30 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         reader.readAsDataURL(input.files[0]);
     }
 }
+$('.delete_user').click(function(){
+	_conf("Are you sure to delete this user?","delete_user",[$(this).attr('data-id')])
+})
+$('.edit_user').click(function(){
+		uni_modal("Manage User","manage_user.php?id="+$(this).attr('data-id'),'mid-large')
+		
+	})
+function delete_user($id){
+		start_load()
+		$.ajax({
+			url:'ajax.php?action=delete_user',
+			method:'POST',
+			data:{id:$id},
+			success:function(resp){
+				if(resp==1){
+					alert_toast("Data successfully deleted",'success')
+					setTimeout(function(){
+						location.reload()
+					},1500)
+
+				}
+			}
+		})
+}
+
+
 </script>

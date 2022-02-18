@@ -124,7 +124,7 @@
 	})
 	
 	$('.edit_forum').click(function(){
-		uni_modal("Manage Job Post","manage_forum.php?id="+$(this).attr('data-id'),'mid-large')
+		uni_modal("Manage Forum","manage_forum.php?id="+$(this).attr('data-id'),'mid-large')
 		
 	})
 	$('.delete_forum').click(function(){

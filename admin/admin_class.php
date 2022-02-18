@@ -65,7 +65,55 @@ Class Action {
 		}
 		header("location:../index.php");
 	}
-
+	function save_newuser(){
+		extract($_POST);
+		$name = $_POST["name"]; 
+		$username = $_POST["username"]; 
+		$password = $_POST["password"];
+		$type = $_POST["type"];
+		$gender = $_POST["gender"];
+		$batch = $_POST["batch"];
+		$description = $_POST["description"];
+		$filename =basename($_FILES["fileToUpload"]["name"]);
+		$target_dir = "assets/uploads/";
+		$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+		$uploadOk = 1;
+					
+		
+		$sql = "Select * from users where username='$username'";
+		
+		$result = mysqli_query($conn, $sql);
+		
+		$num = mysqli_num_rows($result); 
+		
+		// This sql query is use to check if
+		// the username is already present 
+		// or not in our Database
+		if($num == 0 ) {
+			if($exists==false) {
+				
+				$sql = "INSERT INTO `users` ( `name`, 
+					`username`, `password`, `type`, `gender`, `batch`, `status`, `avatar`) VALUES ('$name', 
+					'$username','$password', '$type', '$gender', '$batch', '$description', '$filename')";
+		
+				$result = mysqli_query($conn, $sql);
+				if ($uploadOk == 0) {
+					echo "Sorry, your file was not uploaded.";
+				// if everything is ok, try to upload file
+				} else {
+					if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+					
+					} 
+				}
+		
+				if ($result) {
+					$showAlert = true; 
+				}
+				
+			}
+		}
+	}
+	
 	function save_user(){
 		extract($_POST);
 		$data = " name = '$name' ";
@@ -377,6 +425,7 @@ Class Action {
 			return 1;
 		}
 	}
+
 	
 	function participate(){
 		extract($_POST);
